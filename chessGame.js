@@ -20,7 +20,7 @@ function onDragStart (source, piece, position, orientation) {
 
 function makeComputerMove(){
   let value = minimax(4, game, null, -999999, 999999)
-  console.log(value)
+  
   game.move(value[1])
   
   board1.position(game.fen())
@@ -35,7 +35,7 @@ function minimax(depth, state, best_move, alpha, beta, maxPlayer=true){
   let captures = []
   let normal = []
   let sorted = []
-  let child = null
+  
   
  
   for (let i = 0; i< possibleMoves.length; i++){
@@ -71,10 +71,10 @@ function minimax(depth, state, best_move, alpha, beta, maxPlayer=true){
 
  
     for(let i=0; i< sorted.length; i++){
-      child = new Chess(state.fen())
-      child.move(sorted[i])
-      
-      let calcVal = minimax(depth - 1, child, best_move, alpha, beta, !maxPlayer)[0]
+
+      state.move(sorted[i])
+
+      let calcVal = minimax(depth - 1, state, best_move, alpha, beta, !maxPlayer)[0]
 
       if (calcVal > value){
         best_move = sorted[i]
@@ -86,8 +86,12 @@ function minimax(depth, state, best_move, alpha, beta, maxPlayer=true){
      
       alpha = Math.max(alpha, value);
       
+      state.undo()
+
       if(beta <= alpha) 
           break
+      
+      
       
     }
    
@@ -102,11 +106,9 @@ function minimax(depth, state, best_move, alpha, beta, maxPlayer=true){
 
     for(let i=0; i< sorted.length; i++){
       
-      child = new Chess(state.fen())
-      child.move(sorted[i])
+      state.move(sorted[i])
 
-
-      let calcVal = minimax(depth - 1, child, best_move, alpha, beta, !maxPlayer)[0]
+      let calcVal = minimax(depth - 1, state, best_move, alpha, beta, !maxPlayer)[0]
 
       if (calcVal < value)
         best_move = sorted[i]
@@ -116,13 +118,16 @@ function minimax(depth, state, best_move, alpha, beta, maxPlayer=true){
       
       beta = Math.min(beta, value);
       
-
-      if(beta <= alpha) 
-          break  
+      state.undo()
+      
+      if(beta <= alpha) {
+        break 
+      }
+           
 
       
+
     }
-    
     
       
     
@@ -139,8 +144,9 @@ function evaluatedPos(state, maxPlayer){
 
   let whiteEval = 0
   let blackEval = 0
-  let legalMoves = state.moves()
-  
+  let blackLegalMoves = state.moves()
+  let whiteLegalMoves = state.moves()
+
 
 
 
@@ -187,11 +193,8 @@ function evaluatedPos(state, maxPlayer){
       }
         
     })
-  
 
-  //console.log(state._history)
-
-  legalMoves.forEach(function(legalMove){
+  blackLegalMoves.forEach(function(legalMove){
     if (legalMove.indexOf("B")){
       blackEval += 0.01
     }
@@ -203,6 +206,17 @@ function evaluatedPos(state, maxPlayer){
     }
   
     
+  })
+
+
+  let centerSquares = ['e5', 'e4', 'd4', 'd5']
+
+  centerSquares.forEach(function (square){
+    if (state.get(square) != null && state.get(square).type == 'p'){
+      state.get(square).color == 'b' ? blackEval += 0.9 : whiteEval += 0.9
+
+      console.log(state.pgn())
+    }
   })
 
   if (state.get('e8').type == 'r' && state.get('g8').type == 'k'){
@@ -237,7 +251,7 @@ function onDrop (source, target) {
   // illegal move
   if (move === null) return 'snapback'
 
-  window.setTimeout(makeComputerMove, 1000)
+  window.setTimeout(makeComputerMove, 500)
   
 }
 
@@ -248,10 +262,6 @@ function onSnapEnd () {
   board1.position(game.fen())
 }
 
-function onMoveEnd(){
-  console.log("end")
-  
-}
 
 var config = {
   draggable: true,
@@ -259,7 +269,6 @@ var config = {
   onDragStart: onDragStart,
   onDrop: onDrop,
   onSnapEnd: onSnapEnd,
-  onMoveEnd: onMoveEnd,
 }
 
 
