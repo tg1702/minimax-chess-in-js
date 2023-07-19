@@ -4,6 +4,103 @@ import { Chess } from './node_modules/chess.js/dist/chess.js'
 
 var board1 = null
 var game = new Chess()
+var bitboards = {
+  w_pawns: [
+  0, 0 , 0, 0, 0, 0, 0, 0,
+  0, 0 , 0, 0, 0, 0, 0, 0,
+  0, 0 , 0, 0, 0, 0, 0, 0,
+  0, 0 , 0, 0, 0, 0, 0, 0,
+  0, 0 , 0, 0, 0, 0, 0, 0,
+  0, 0 , 0, 0, 0, 0, 0, 0,
+  1, 1 , 1, 1, 1, 1, 1, 1,
+  0, 0 , 0, 0, 0, 0, 0, 0
+                  ],
+  w_rooks: [
+  0, 0 , 0, 0, 0, 0, 0, 0,
+  0, 0 , 0, 0, 0, 0, 0, 0,
+  0, 0 , 0, 0, 0, 0, 0, 0,
+  0, 0 , 0, 0, 0, 0, 0, 0,
+  0, 0 , 0, 0, 0, 0, 0, 0,
+  0, 0 , 0, 0, 0, 0, 0, 0,
+  0, 0 , 0, 0, 0, 0, 0, 0,
+  1, 0 , 0, 0, 0, 0, 0, 1
+  ],
+
+  w_knights: [
+  0, 0 , 0, 0, 0, 0, 0, 0,
+  0, 0 , 0, 0, 0, 0, 0, 0,
+  0, 0 , 0, 0, 0, 0, 0, 0,
+  0, 0 , 0, 0, 0, 0, 0, 0,
+  0, 0 , 0, 0, 0, 0, 0, 0,
+  0, 0 , 0, 0, 0, 0, 0, 0,
+  0, 0 , 0, 0, 0, 0, 0, 0,
+  0, 1 , 0, 0, 0, 0, 1, 0
+  ],
+                            
+  w_bishops: [
+  0, 0 , 0, 0, 0, 0, 0, 0,
+  0, 0 , 0, 0, 0, 0, 0, 0,
+  0, 0 , 0, 0, 0, 0, 0, 0,
+  0, 0 , 0, 0, 0, 0, 0, 0,
+  0, 0 , 0, 0, 0, 0, 0, 0,
+  0, 0 , 0, 0, 0, 0, 0, 0,
+  0, 0 , 0, 0, 0, 0, 0, 0,
+  0, 0 , 1, 0, 0, 1, 0, 0
+  ],
+  
+  w_queen: [
+  0, 0 , 0, 0, 0, 0, 0, 0,
+  0, 0 , 0, 0, 0, 0, 0, 0,
+  0, 0 , 0, 0, 0, 0, 0, 0,
+  0, 0 , 0, 0, 0, 0, 0, 0,
+  0, 0 , 0, 0, 0, 0, 0, 0,
+  0, 0 , 0, 0, 0, 0, 0, 0,
+  0, 0 , 0, 0, 0, 0, 0, 0,
+  0, 0 , 0, 1, 0, 0, 0, 0
+  ],
+                              
+  w_king: [
+  0, 0 , 0, 0, 0, 0, 0, 0,
+  0, 0 , 0, 0, 0, 0, 0, 0,
+  0, 0 , 0, 0, 0, 0, 0, 0,
+  0, 0 , 0, 0, 0, 0, 0, 0,
+  0, 0 , 0, 0, 0, 0, 0, 0,
+  0, 0 , 0, 0, 0, 0, 0, 0,
+  0, 0 , 0, 0, 0, 0, 0, 0,
+  0, 0 , 0, 0, 1, 0, 0, 0
+                                                                                                      ],
+                                                                                                   all_pieces : [
+                                                                                                    1, 1 , 1, 1, 1, 1, 1, 1,
+                                                                                                    1, 1, 1, 1, 1, 1, 1, 1,
+                                                                                                    0, 0 , 0, 0, 0, 0, 0, 0,
+                                                                                                    0, 0 , 0, 0, 0, 0, 0, 0,
+                                                                                                    0, 0 , 0, 0, 0, 0, 0, 0,
+                                                                                                    0, 0 , 0, 0, 0, 0, 0, 0,
+                                                                                                    1, 1, 1, 1, 1, 1, 1, 1,
+                                                                                                    1, 1 , 1, 1, 1, 1, 1, 1                                                                                              
+                                                                                                  ],
+
+                                                                                                   white_pieces: [
+                                                                                                    [0, 0 , 0, 0, 0, 0, 0, 0],
+                                                                                                    [0, 0 , 0, 0, 0, 0, 0, 0],
+                                                                                                    [0, 0 , 0, 0, 0, 0, 0, 0],
+                                                                                                    [0, 0 , 0, 0, 0, 0, 0, 0],
+                                                                                                    [0, 0 , 0, 0, 0, 0, 0, 0],
+                                                                                                    [0, 0 , 0, 0, 0, 0, 0, 0],
+                                                                                                    [1, 1, 1, 1, 1, 1, 1, 1],
+                                                                                                    [1, 1 , 1, 1, 1, 1, 1, 1]                                                                                               
+                                                                                                   ],
+                                                                                                   black_pieces: [
+                                                                                                    1, 1 , 1, 1, 1, 1, 1, 1,
+                                                                                                    1, 1, 1, 1, 1, 1, 1, 1,
+                                                                                                    0, 0 , 0, 0, 0, 0, 0, 0,
+                                                                                                    0, 0 , 0, 0, 0, 0, 0, 0,
+                                                                                                    0, 0 , 0, 0, 0, 0, 0, 0,
+                                                                                                    0, 0 , 0, 0, 0, 0, 0, 0,
+                                                                                                    0, 0 , 0, 0, 0, 0, 0, 0,
+                                                                                                    0, 0 , 0, 0, 0, 0, 0, 0,
+                                                                                                   ]
+}
 
 function onDragStart (source, piece, position, orientation) {
   // do not pick up pieces if the game is over
@@ -139,18 +236,21 @@ function minimax(depth, state, best_move, alpha, beta, maxPlayer=true){
 }
 
 function evaluatedPos(state, maxPlayer){
-  let n = state.fen().split(' ')[0]
-  let FEN = n.split('')
-
+  let ascii_board = Array.from(state.ascii())
   let whiteEval = 0
   let blackEval = 0
   let blackLegalMoves = state.moves()
   let whiteLegalMoves = state.moves()
+  let charList = [' ', '|', '-', '+', '\n', '1', '2', '3', '4', '5', '6', '7', '8', 'a', 'c', 'd', 'e', 'f', 'g', 'h']
 
+  let board = ascii_board.filter(function(char){
+      return charList.includes(char) == false
+  })
 
+  board.pop()
 
-
-    FEN.forEach( function(char){
+    console.log(board)
+    ascii_board.forEach( function(char){
 
       switch(char){
         case "p":
@@ -194,6 +294,120 @@ function evaluatedPos(state, maxPlayer){
         
     })
 
+
+  let pst_opening_w = {
+    w_rooks : [
+      0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0.3, 0.3, 0.35, 0.5, 0, 0,
+    ],
+    w_knights : [
+      0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0.4, 0.4, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0.3, 0, 0, 0.3, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0,
+    ],
+    w_king: [
+      0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0.2, 0.1, 0, 0, 0, 0.4, 0.2,
+    ],
+    w_queen: [
+      0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0.1, 0.2, 0, 0.3, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0,
+    ],
+    w_bishops: [
+      0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0.3, 0, 0, 0, 0, 0.3, 0,
+      0, 0, 0.3, 0, 0, 0.3, 0, 0,
+      0, 0, 0, 0, 0.2, 0, 0, 0,
+      0, 0.25, 0, 0, 0, 0, 0.25, 0,
+      0, 0, 0, 0, 0, 0, 0, 0,
+    ],
+    w_pawns: [
+      0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0.22, 0.22, 0, 0, 0,
+      0, 0, 0.2, 0.3, 0.3, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0, 0, 0, 0, 0,
+    ],
+
+  }
+
+  let pst_opening_b = {
+    b_rooks: pst_opening_w.w_rooks.reverse(),
+    b_bishops: pst_opening_w.w_bishops.reverse(),
+    b_knights: pst_opening_w.w_knights.reverse(),
+    b_king: pst_opening_w.w_king.reverse(),
+    b_pawns: pst_opening_w.w_pawns.reverse(),
+    b_queen: pst_opening_w.w_queen.reverse(),
+
+  }
+
+  board.forEach(function(sqaure, index){
+    switch(sqaure){
+      case "P":
+        whiteEval += pst_opening_w.w_pawns[index]
+        break
+      case "K":
+        whiteEval += pst_opening_w.w_king[index]
+        break
+      case "Q":
+        whiteEval += pst_opening_w.w_queen[index]
+        break
+      case "B":
+        whiteEval += pst_opening_w.w_bishops[index]
+        break
+      case "R":
+        whiteEval += pst_opening_w.w_rooks[index]
+        break
+
+        case "p":
+          blackEval += pst_opening_b.b_pawns[index]
+          break
+        case "k":
+          blackEval += pst_opening_b.b_king[index]
+          break
+        case "q":
+          blackEval += pst_opening_b.b_queen[index]
+          break
+        case "b":
+          blackEval += pst_opening_b.b_bishops[index]
+          break
+        case "r":
+          blackEval += pst_opening_b.b_rooks[index]
+          break
+      
+
+    }
+  })
+
+  /*
   blackLegalMoves.forEach(function(legalMove){
     if (legalMove.indexOf("B")){
       blackEval += 0.01
@@ -215,7 +429,7 @@ function evaluatedPos(state, maxPlayer){
     if (state.get(square) != null && state.get(square).type == 'p'){
       state.get(square).color == 'b' ? blackEval += 0.9 : whiteEval += 0.9
 
-      console.log(state.pgn())
+     
     }
   })
 
@@ -226,6 +440,7 @@ function evaluatedPos(state, maxPlayer){
   if (state.get('e1').type == 'r' && state.get('g1').type == 'k'){
     whiteEval += 1
   }
+  */
 
   if (state.isCheckmate()){
    
