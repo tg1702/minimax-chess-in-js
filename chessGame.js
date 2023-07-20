@@ -259,7 +259,7 @@ function evaluatedPos(state, maxPlayer){
       0, 0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0.2, 0, 0, 0, 0,
       0, 0, 0, 0.25, 0.25, 0, 0, 0,
-      0, 0, 0, 0.4, 0.4, 0.4, 0, 0,
+      0, 0, 0, 0.3, 0.3, 0.3, 0, 0,
       -0.4, 0, 0.3, 0, 0, 0.3, 0, -0.4,
       0, 0, 0, 0, 0, 0, 0, 0,
       0, -0.1, 0, 0, 0, 0, -0.1, 0,
@@ -299,7 +299,7 @@ function evaluatedPos(state, maxPlayer){
       0, 0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0.22, 0.22, 0, 0, 0,
-      0, 0, 0.2, 0.3, 0.3, 0, 0, 0,
+      0, 0, 0.2, 0.35, 0.35, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0, 0,
@@ -394,19 +394,18 @@ function evaluatedPos(state, maxPlayer){
 
 function onDrop (source, target) {
   // see if the move is legal
-  var move = game.move({
-    from: source,
-    to: target,
-    promotion: 'q' // NOTE: always promote to a queen for example simplicity
-  })
-
-
-
-  // illegal move
-  if (move === null) return 'snapback'
-
-  window.setTimeout(makeComputerMove, 500)
+  try {
+      game.move({
+      from: source,
+      to: target,
+      promotion: 'q'
+    })
+  }
+  catch(e){
+    return 'snapback'
+  }
   
+  window.setTimeout(makeComputerMove, 250)
 }
 
 
