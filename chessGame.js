@@ -323,7 +323,7 @@ function evaluatedPos(state, maxPlayer){
 
   board.pop()
 
-    board.forEach( function(char){
+    board.forEach( function(char, index){
 
       switch(char){
         case "p":
