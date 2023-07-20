@@ -119,6 +119,7 @@ function makeComputerMove(){
   let value = minimax(4, game, null, -999999, 999999)
   
   game.move(value[1])
+  console.log(value[0])
   
   board1.position(game.fen())
   
@@ -239,63 +240,10 @@ function evaluatedPos(state, maxPlayer){
   let ascii_board = Array.from(state.ascii())
   let whiteEval = 0
   let blackEval = 0
-  let blackLegalMoves = state.moves()
-  let whiteLegalMoves = state.moves()
   let charList = [' ', '|', '-', '+', '\n', '1', '2', '3', '4', '5', '6', '7', '8', 'a', 'c', 'd', 'e', 'f', 'g', 'h']
 
-  let board = ascii_board.filter(function(char){
-      return charList.includes(char) == false
-  })
 
-  board.pop()
-
-    console.log(board)
-    ascii_board.forEach( function(char){
-
-      switch(char){
-        case "p":
-          blackEval += 1
-          break
-        case "n":
-          blackEval += 3
-          break
-        case "q":
-          blackEval += 9
-          break
-        case "b":
-          blackEval += 3.1
-          break
-        case "r":
-          blackEval += 5
-          break
-        case "k":
-          blackEval += 100
-          break
-
-          case "P":
-            whiteEval += 1
-            break
-          case "N":
-            whiteEval += 3
-            break
-          case "Q":
-            whiteEval += 9
-            break
-          case "B":
-            whiteEval += 3.1
-            break
-          case "R":
-            whiteEval += 5
-            break
-          case "K":
-            whiteEval += 100
-            break
-      }
-        
-    })
-
-
-  let pst_opening_w = {
+  const pst_opening_w = {
     w_rooks : [
       0, 0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0, 0,
@@ -309,12 +257,12 @@ function evaluatedPos(state, maxPlayer){
     w_knights : [
       0, 0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0, 0,
+      0, 0, 0, 0.2, 0, 0, 0, 0,
+      0, 0, 0, 0.25, 0.25, 0, 0, 0,
+      0, 0, 0, 0.4, 0.4, 0.4, 0, 0,
+      -0.4, 0, 0.3, 0, 0, 0.3, 0, -0.4,
       0, 0, 0, 0, 0, 0, 0, 0,
-      0, 0, 0, 0.4, 0.4, 0, 0, 0,
-      0, 0, 0, 0, 0, 0, 0, 0,
-      0, 0, 0.3, 0, 0, 0.3, 0, 0,
-      0, 0, 0, 0, 0, 0, 0, 0,
-      0, 0, 0, 0, 0, 0, 0, 0,
+      0, -0.1, 0, 0, 0, 0, -0.1, 0,
     ],
     w_king: [
       0, 0, 0, 0, 0, 0, 0, 0,
@@ -324,24 +272,24 @@ function evaluatedPos(state, maxPlayer){
       0, 0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0, 0,
-      0, 0.2, 0.1, 0, 0, 0, 0.4, 0.2,
+      0, 0.2, 0.1, -0.2, 0, -0.2, 0.4, 0.2,
     ],
     w_queen: [
       0, 0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0, 0,
-      0, 0, 0, 0, 0, 0, 0, 0,
-      0, 0, 0, 0, 0, 0, 0, 0,
-      0, 0, 0, 0, 0, 0, 0, 0,
-      0, 0, 0.1, 0.2, 0, 0.3, 0, 0,
+      0, 0, -0.5, -0.5, -0.5, -0.5, 0, 0,
+      0, 0, -0.5, -0.5, -0.5, -0.5, 0, 0,
+      0, 0, -0.1, 0, 0, -0.1, 0, 0,
+      0, 0, 0.2, 0.3, 0, 0.2, 0, 0,
       0, 0, 0, 0, 0, 0, 0, 0,
     ],
     w_bishops: [
       0, 0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0, 0,
       0, 0, 0, 0, 0, 0, 0, 0,
-      0, 0.3, 0, 0, 0, 0, 0.3, 0,
-      0, 0, 0.3, 0, 0, 0.3, 0, 0,
+      0, 0.25, 0, 0, 0, 0, 0.25, 0,
+      0, 0, 0.25, 0, 0, 0.25, 0, 0,
       0, 0, 0, 0, 0.2, 0, 0, 0,
       0, 0.25, 0, 0, 0, 0, 0.25, 0,
       0, 0, 0, 0, 0, 0, 0, 0,
@@ -359,7 +307,7 @@ function evaluatedPos(state, maxPlayer){
 
   }
 
-  let pst_opening_b = {
+  const pst_opening_b = {
     b_rooks: pst_opening_w.w_rooks.reverse(),
     b_bishops: pst_opening_w.w_bishops.reverse(),
     b_knights: pst_opening_w.w_knights.reverse(),
@@ -369,78 +317,69 @@ function evaluatedPos(state, maxPlayer){
 
   }
 
-  board.forEach(function(sqaure, index){
-    switch(sqaure){
-      case "P":
-        whiteEval += pst_opening_w.w_pawns[index]
-        break
-      case "K":
-        whiteEval += pst_opening_w.w_king[index]
-        break
-      case "Q":
-        whiteEval += pst_opening_w.w_queen[index]
-        break
-      case "B":
-        whiteEval += pst_opening_w.w_bishops[index]
-        break
-      case "R":
-        whiteEval += pst_opening_w.w_rooks[index]
-        break
+  let board = ascii_board.filter(function(char){
+      return charList.includes(char) == false
+  })
 
+  board.pop()
+
+    board.forEach( function(char){
+
+      switch(char){
         case "p":
+          blackEval += 1
           blackEval += pst_opening_b.b_pawns[index]
           break
-        case "k":
-          blackEval += pst_opening_b.b_king[index]
+        case "n":
+          blackEval += 3
+          blackEval += pst_opening_b.b_knights[index]
           break
         case "q":
+          blackEval += 9
           blackEval += pst_opening_b.b_queen[index]
           break
         case "b":
           blackEval += pst_opening_b.b_bishops[index]
+          blackEval += 3.1
           break
         case "r":
           blackEval += pst_opening_b.b_rooks[index]
+          blackEval += 5
           break
-      
+        case "k":
+          blackEval += pst_opening_b.b_king[index]
+          blackEval += 100
+          break
 
-    }
-  })
+          case "P":
+            whiteEval += pst_opening_w.w_pawns[index]
+            whiteEval += 1
+            break
+          case "N":
+            whiteEval += pst_opening_w.w_knights[index]
+            whiteEval += 3
+            break
+          case "Q":
+            whiteEval += pst_opening_w.w_queen[index]
+            whiteEval += 9
+            break
+          case "B":
+            whiteEval += pst_opening_w.w_bishops[index]
+            whiteEval += 3.1
+            break
+          case "R":
+            whiteEval += pst_opening_w.w_rooks[index]
+            whiteEval += 5
+            break
+          case "K":
+            whiteEval += pst_opening_w.w_king[index]
+            whiteEval += 100
+            break
+      }
+        
+    })
 
-  /*
-  blackLegalMoves.forEach(function(legalMove){
-    if (legalMove.indexOf("B")){
-      blackEval += 0.01
-    }
-    if (legalMove.indexOf("N")){
-      blackEval += 0.01
-    }
-    if (legalMove.indexOf("R")){
-      blackEval += 0.01
-    }
-  
-    
-  })
 
-
-  let centerSquares = ['e5', 'e4', 'd4', 'd5']
-
-  centerSquares.forEach(function (square){
-    if (state.get(square) != null && state.get(square).type == 'p'){
-      state.get(square).color == 'b' ? blackEval += 0.9 : whiteEval += 0.9
-
-     
-    }
-  })
-
-  if (state.get('e8').type == 'r' && state.get('g8').type == 'k'){
-    blackEval += 1
-  }
-
-  if (state.get('e1').type == 'r' && state.get('g1').type == 'k'){
-    whiteEval += 1
-  }
-  */
 
   if (state.isCheckmate()){
    
